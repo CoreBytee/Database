@@ -34,7 +34,7 @@ App.bind({
         local LuaReturn = {status = "ok", error = "", key = req.params.key}
 
         if LuaData[req.params.store] then
-            LuaReturn.data = QS.urlencode(LuaData[req.params.store][req.params.key])
+            LuaReturn.data = LuaData[req.params.store][req.params.key]
         else
             LuaReturn.status = "error"
             LuaReturn.error = "Store not found"
