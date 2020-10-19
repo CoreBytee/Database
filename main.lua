@@ -11,15 +11,14 @@ App.bind({
 
   App.route({
     method = "GET",
-    path = "/do/:user/:action",
-    domain = "*.myapp.io"
+    path = "/cubydatastore/get/:store/:key/:data",
   }, function (req, res, go)
     -- Handle route
   end)
 
   App.route({
     method = "PUT",
-    path = "/cubysatastore/save/:store/:key/:data"
+    path = "/cubydatastore/save/:store/:key/:data"
   }, function (req, res, go)
     local url = saveFile(req.params.username, req.body)
     res.code = 201
