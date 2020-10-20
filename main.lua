@@ -3,6 +3,13 @@ local Json = require("json")
 local QS = require("querystring")
 
 --print(Json.encode({Levels = {}, Warnings = {}}))
+local ENVFile = io.open("./.env", "r")
+
+local Env = Json.decode(ENVFile:read("a*"))
+
+ENVFile:close()
+
+--print(Env.KEY)
 
 App.bind({
     host = "0.0.0.0",
@@ -23,7 +30,7 @@ App.bind({
 
   App.route({
     method = "GET",
-    path = "/cubydatastore/get/:store/:key",
+    path = "/" .. Env.KEY .. "/get/:store/:key",
   }, function (req, res, go)
 
         local File = io.open("./data.json", "r")
@@ -48,7 +55,7 @@ App.bind({
 
   App.route({
     method = "GET",
-    path = "/cubydatastore/save/:store/:key/:data"
+    path = "/" .. Env.KEY .. "/save/:store/:key/:data"
   }, function (req, res, go)
     
     local File = io.open("./data.json", "r+")
