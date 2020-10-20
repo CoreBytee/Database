@@ -5,9 +5,16 @@ local QS = require("querystring")
 --print(Json.encode({Levels = {}, Warnings = {}}))
 local ENVFile = io.open("./.env", "r")
 
-local Env = Json.decode(ENVFile:read("a*"))
+local Env
 
-ENVFile:close()
+if ENVFile then
+  Env = Json.decode(ENVFile:read("a*"))
+  print("found env")
+  ENVFile:close()
+else
+  Env = {KEY = os.getenv("KEY")}
+  print("no env")
+end
 
 --print(Env.KEY)
 
