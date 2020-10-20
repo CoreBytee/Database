@@ -12,7 +12,7 @@ if ENVFile then
   print("found env")
   ENVFile:close()
 else
-  Env = {KEY = os.getenv("KEY")}
+  Env = {KEY = "nL7shgcKnNXaqB8w2WZ5swpFeeUtGm2acMYqbhAy8Sv3fSY9nSAGjANgqeFNtsS9"}
   print("no env")
 end
 
