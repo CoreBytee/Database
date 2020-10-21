@@ -74,7 +74,8 @@ App.bind({
 
     if LuaData[req.params.store] then
         if req.params.data ~= "" then
-        LuaData[req.params.store][req.params.key] = json.decode(req.params.data)
+          LuaData[req.params.store][req.params.key] = Json.decode(QS.urldecode(req.params.data))
+          print(req.params.data)
         else
           LuaData[req.params.store][req.params.key] = nil
         end
