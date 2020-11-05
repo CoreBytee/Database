@@ -5,16 +5,8 @@ local QS = require("querystring")
 --print(Json.encode({Levels = {}, Warnings = {}}))
 local ENVFile = io.open("./.env", "r")
 
-local Env
+local KEY = require("./Env.lua").KEY or os.getenv("KEY")
 
-if ENVFile then
-  Env = Json.decode(ENVFile:read("a*"))
-  print("found env")
-  ENVFile:close()
-else
-  Env = {KEY = "nL7shgcKnNXaqB8w2WZ5swpFeeUtGm2acMYqbhAy8Sv3fSY9nSAGjANgqeFNtsS9"}
-  print("no env")
-end
 
 --print(Env.KEY)
 
@@ -37,7 +29,7 @@ App.bind({
 
   App.route({
     method = "GET",
-    path = "/" .. Env.KEY .. "/get/:store/:key",
+    path = "/" .. KEY .. "/get/:store/:key",
   }, function (req, res, go)
 
         local File = io.open("./data.json", "r")
@@ -61,8 +53,8 @@ App.bind({
   end)
 
   App.route({
-    method = "GET",
-    path = "/" .. Env.KEY .. "/save/:store/:key/:data"
+    method = "POST",
+    path = "/" .. KEY .. "/save/:store/:key"
   }, function (req, res, go)
     
     local File = io.open("./data.json", "r+")
@@ -73,12 +65,8 @@ App.bind({
     local LuaReturn = {status = "ok", error = "", key = req.params.key}
 
     if LuaData[req.params.store] then
-        if req.params.data ~= "" then
-          LuaData[req.params.store][req.params.key] = Json.decode(QS.urldecode(req.params.data))
-          print(req.params.data)
-        else
-          LuaData[req.params.store][req.params.key] = nil
-        end
+        
+        LuaData[req.params.store][req.params.key] = Json.decode(QS.urldecode(req.body))
 
         LuaReturn.data = LuaData[req.params.store][req.params.key]
 
