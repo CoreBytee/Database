@@ -52,6 +52,31 @@ App.bind({
         res.code = 200
   end)
 
+	App.route({
+    method = "GET",
+    path = "/" .. KEY .. "/getstore/:store",
+  }, function (req, res, go)
+
+        local File = io.open("./data.json", "r")
+        local JsonData = File:read("*a")
+        local LuaData = Json.decode(JsonData)
+        File:close()
+
+        local LuaReturn = {status = "ok", error = "", store = req.params.store}
+
+        if LuaData[req.params.store] then
+            LuaReturn.data = LuaData[req.params.store]
+        else
+            LuaReturn.status = "error"
+            LuaReturn.error = "Store not found"
+        end
+
+        
+        res.body = Json.encode(LuaReturn)
+        res.headers["Content-Type"] = "application/json"
+        res.code = 200
+  end)
+
   App.route({
     method = "POST",
     path = "/" .. KEY .. "/save/:store/:key"
